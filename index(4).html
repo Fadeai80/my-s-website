@@ -1,0 +1,1661 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نووا AI — پلتفرم هوش مصنوعی برای تولید محتوای فارسی</title>
+    <meta name="description" content="نووا AI، پلتفرم هوش مصنوعی برای تولید مقاله، تصویر و کمپین‌های بازاریابی فارسی با کیفیت حرفه‌ای.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+/* ============================
+   نووا AI — Professional Design
+   الهام‌گرفته از Vercel / Linear / Stripe
+   ============================ */
+
+:root {
+    /* Neutral palette — zinc/ink */
+    --bg: #08090C;
+    --bg-elevated: #0F1115;
+    --surface: #14161B;
+    --surface-hover: #1A1D23;
+    --surface-active: #20242C;
+
+    /* Borders */
+    --border: rgba(255, 255, 255, 0.06);
+    --border-strong: rgba(255, 255, 255, 0.1);
+    --border-accent: rgba(99, 102, 241, 0.4);
+
+    /* Text */
+    --text-primary: #FAFAFB;
+    --text-secondary: #A1A5B0;
+    --text-muted: #6B6F7A;
+    --text-dim: #4A4D55;
+
+    /* Accent — refined indigo, not neon */
+    --accent: #6366F1;
+    --accent-bright: #818CF8;
+    --accent-soft: rgba(99, 102, 241, 0.12);
+    --accent-softer: rgba(99, 102, 241, 0.06);
+
+    /* Supporting colors — muted */
+    --emerald: #10B981;
+    --amber: #F59E0B;
+    --rose: #F43F5E;
+    --sky: #0EA5E9;
+
+    /* Gradients — subtle */
+    --gradient-subtle: linear-gradient(180deg, rgba(99, 102, 241, 0.04) 0%, transparent 100%);
+    --gradient-accent: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+    --gradient-text: linear-gradient(135deg, #C7D2FE 0%, #A78BFA 100%);
+
+    /* Shadows — soft, layered, not glowing */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.2);
+    --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.4), 0 4px 8px rgba(0, 0, 0, 0.2);
+    --shadow-accent: 0 4px 20px rgba(99, 102, 241, 0.15);
+
+    /* Layout */
+    --container: 1200px;
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --radius-xl: 20px;
+}
+
+/* ----- Reset ----- */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 100px;
+}
+
+body {
+    font-family: 'Vazirmatn', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.7;
+    direction: rtl;
+    font-size: 16px;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+}
+
+/* Subtle background texture */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+        radial-gradient(circle at 20% 0%, rgba(99, 102, 241, 0.04), transparent 50%),
+        radial-gradient(circle at 80% 100%, rgba(139, 92, 246, 0.03), transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+a { color: inherit; text-decoration: none; transition: color 0.2s ease; }
+ul { list-style: none; }
+
+.container {
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 0 24px;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+/* ============================
+   Buttons
+   ============================ */
+.btn-primary,
+.btn-secondary,
+.btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: var(--radius-md);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    line-height: 1.4;
+}
+
+.btn-primary {
+    background: var(--text-primary);
+    color: var(--bg);
+    border-color: var(--text-primary);
+}
+
+.btn-primary:hover {
+    background: #E4E4E7;
+    border-color: #E4E4E7;
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-secondary {
+    background: var(--surface);
+    color: var(--text-primary);
+    border-color: var(--border-strong);
+}
+
+.btn-secondary:hover {
+    background: var(--surface-hover);
+    border-color: var(--border-accent);
+}
+
+.btn-ghost {
+    background: transparent;
+    color: var(--text-secondary);
+    padding: 8px 14px;
+}
+
+.btn-ghost:hover {
+    color: var(--text-primary);
+    background: var(--surface);
+}
+
+.btn-large {
+    padding: 13px 28px;
+    font-size: 15px;
+}
+
+.btn-full { width: 100%; }
+
+.btn-arrow {
+    transition: transform 0.2s ease;
+    font-size: 16px;
+}
+
+.btn-primary:hover .btn-arrow { transform: translateX(-3px); }
+
+/* ============================
+   Navbar
+   ============================ */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 16px 0;
+    transition: all 0.3s ease;
+    background: transparent;
+    border-bottom: 1px solid transparent;
+}
+
+.navbar.scrolled {
+    background: rgba(8, 9, 12, 0.8);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom-color: var(--border);
+    padding: 12px 0;
+}
+
+.nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--text-primary);
+    letter-spacing: -0.3px;
+}
+
+.logo-mark {
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    background: var(--gradient-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.logo-text { font-weight: 600; }
+.logo-accent { color: var(--text-muted); font-weight: 400; }
+
+.nav-links {
+    display: flex;
+    gap: 4px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 4px;
+    border-radius: var(--radius-md);
+}
+
+.nav-links a {
+    padding: 7px 14px;
+    color: var(--text-secondary);
+    font-weight: 500;
+    font-size: 13.5px;
+    border-radius: var(--radius-sm);
+    transition: all 0.15s ease;
+}
+
+.nav-links a:hover {
+    color: var(--text-primary);
+    background: var(--surface-hover);
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    padding: 10px;
+    border-radius: var(--radius-sm);
+}
+
+.menu-toggle span {
+    display: block;
+    width: 18px;
+    height: 1.5px;
+    background: var(--text-primary);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.menu-toggle.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.menu-toggle.active span:nth-child(2) { opacity: 0; }
+.menu-toggle.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ============================
+   Hero
+   ============================ */
+.hero {
+    position: relative;
+    padding: 160px 0 100px;
+    text-align: center;
+    overflow: hidden;
+}
+
+.hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+}
+
+/* Subtle radial spotlight at top */
+.hero-bg::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 60%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+/* Grid lines — very subtle */
+.hero-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, black, transparent 70%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, black, transparent 70%);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 780px;
+    margin: 0 auto;
+}
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px 6px 8px;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: 100px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 32px;
+    transition: all 0.2s ease;
+}
+
+.hero-badge:hover {
+    border-color: var(--border-accent);
+    background: var(--surface-hover);
+}
+
+.badge-tag {
+    background: var(--accent-soft);
+    color: var(--accent-bright);
+    padding: 2px 8px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.hero-title {
+    font-size: clamp(36px, 5.5vw, 64px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -1.5px;
+    margin-bottom: 24px;
+    color: var(--text-primary);
+}
+
+.gradient-text {
+    background: var(--gradient-text);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline;
+}
+
+.hero-subtitle {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 620px;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+    font-weight: 400;
+}
+
+.hero-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 80px;
+    flex-wrap: wrap;
+}
+
+.hero-stats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 48px;
+    padding: 28px 40px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    max-width: 720px;
+    margin: 0 auto;
+    box-shadow: var(--shadow-md);
+}
+
+.stat-num {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1;
+    margin-bottom: 6px;
+    letter-spacing: -1px;
+}
+
+.stat-label {
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.stat-divider {
+    width: 1px;
+    height: 36px;
+    background: var(--border-strong);
+}
+
+/* ============================
+   Trust Bar
+   ============================ */
+.trust-bar {
+    padding: 56px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-elevated);
+}
+
+.trust-title {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-bottom: 32px;
+    font-weight: 500;
+}
+
+.trust-logos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 56px;
+}
+
+.trust-logo {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-muted);
+    opacity: 0.7;
+    transition: all 0.2s ease;
+    cursor: default;
+    letter-spacing: -0.3px;
+}
+
+.trust-logo:hover {
+    color: var(--text-secondary);
+    opacity: 1;
+}
+
+/* ============================
+   Sections
+   ============================ */
+.section {
+    padding: 96px 0;
+    position: relative;
+}
+
+.section-header {
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto 72px;
+}
+
+.section-tag {
+    display: inline-block;
+    padding: 5px 12px;
+    background: var(--accent-soft);
+    color: var(--accent-bright);
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    letter-spacing: 0.3px;
+}
+
+.section-title {
+    font-size: clamp(30px, 4vw, 44px);
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 16px;
+    letter-spacing: -1px;
+    color: var(--text-primary);
+}
+
+.section-desc {
+    color: var(--text-secondary);
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+/* ============================
+   Features Grid — bento style
+   ============================ */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.feature-card {
+    padding: 28px 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-card:hover {
+    border-color: var(--border-strong);
+    background: var(--surface-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.feature-card-center {
+    background: var(--surface);
+    border-color: var(--border);
+}
+
+.feature-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    margin-bottom: 18px;
+    background: var(--surface-active);
+    border: 1px solid var(--border);
+}
+
+.icon-indigo { color: #818CF8; }
+.icon-emerald { color: #34D399; }
+.icon-amber { color: #FBBF24; }
+.icon-rose { color: #FB7185; }
+.icon-sky { color: #38BDF8; }
+.icon-violet { color: #A78BFA; }
+
+.feature-card h3 {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+    letter-spacing: -0.2px;
+}
+
+.feature-card p {
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+/* ============================
+   How It Works
+   ============================ */
+.steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    position: relative;
+}
+
+.step {
+    padding: 32px 28px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    position: relative;
+    transition: all 0.25s ease;
+}
+
+.step:hover {
+    border-color: var(--border-strong);
+    background: var(--surface-hover);
+}
+
+.step-number {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-md);
+    background: var(--accent-soft);
+    color: var(--accent-bright);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    border: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+.step h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+    letter-spacing: -0.2px;
+}
+
+.step p {
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+/* ============================
+   Pricing
+   ============================ */
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    align-items: stretch;
+}
+
+.price-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding: 32px 28px;
+    transition: all 0.25s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.price-card:hover {
+    border-color: var(--border-strong);
+    background: var(--surface-hover);
+}
+
+.price-card-featured {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-accent);
+    box-shadow: var(--shadow-accent);
+}
+
+.price-card-featured:hover {
+    border-color: rgba(99, 102, 241, 0.6);
+}
+
+.price-badge {
+    position: absolute;
+    top: -12px;
+    right: 50%;
+    transform: translateX(50%);
+    background: var(--accent);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+.price-header {
+    margin-bottom: 24px;
+}
+
+.price-header h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+    letter-spacing: -0.2px;
+}
+
+.price-header p {
+    color: var(--text-muted);
+    font-size: 13px;
+}
+
+.price-amount {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin-bottom: 28px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+}
+
+.price-currency {
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.price-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -1px;
+}
+
+.price-period {
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.price-features {
+    flex: 1;
+    margin-bottom: 24px;
+}
+
+.price-features li {
+    padding: 9px 0;
+    color: var(--text-secondary);
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.price-features li::before {
+    content: '';
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2310B981' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* ============================
+   Testimonials
+   ============================ */
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.testimonial-card {
+    padding: 28px 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    transition: all 0.25s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.testimonial-card:hover {
+    border-color: var(--border-strong);
+    background: var(--surface-hover);
+}
+
+.testimonial-stars {
+    color: var(--amber);
+    font-size: 14px;
+    letter-spacing: 1px;
+    margin-bottom: 14px;
+}
+
+.testimonial-text {
+    color: var(--text-primary);
+    font-size: 14.5px;
+    line-height: 1.7;
+    margin-bottom: 24px;
+    flex: 1;
+}
+
+.testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+}
+
+.author-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 15px;
+    color: white;
+    flex-shrink: 0;
+}
+
+.avatar-1 { background: linear-gradient(135deg, #6366F1, #8B5CF6); }
+.avatar-2 { background: linear-gradient(135deg, #0EA5E9, #06B6D4); }
+.avatar-3 { background: linear-gradient(135deg, #F59E0B, #EF4444); }
+
+.author-name {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+.author-role {
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+/* ============================
+   FAQ
+   ============================ */
+.faq-list {
+    max-width: 760px;
+    margin: 0 auto;
+}
+
+.faq-item {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    margin-bottom: 10px;
+    overflow: hidden;
+    transition: border-color 0.2s ease;
+    background: var(--surface);
+}
+
+.faq-item.active {
+    border-color: var(--border-strong);
+}
+
+.faq-question {
+    width: 100%;
+    padding: 18px 22px;
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: right;
+    transition: background 0.15s ease;
+}
+
+.faq-question:hover {
+    background: var(--surface-hover);
+}
+
+.faq-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--surface-active);
+    border: 1px solid var(--border-strong);
+    color: var(--text-secondary);
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+    flex-shrink: 0;
+    margin-right: 16px;
+}
+
+.faq-item.active .faq-icon {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+    transform: rotate(45deg);
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, padding 0.35s ease;
+}
+
+.faq-item.active .faq-answer {
+    max-height: 300px;
+    padding: 0 22px 20px;
+}
+
+.faq-answer p {
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+/* ============================
+   CTA
+   ============================ */
+.cta-section {
+    padding: 80px 0 120px;
+}
+
+.cta-box {
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-xl);
+    padding: 72px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+}
+
+.cta-box::before {
+    content: '';
+    position: absolute;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 300px;
+    background: radial-gradient(ellipse, rgba(99, 102, 241, 0.15), transparent 60%);
+    pointer-events: none;
+}
+
+.cta-box > * { position: relative; z-index: 1; }
+
+.cta-title {
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 700;
+    margin-bottom: 14px;
+    letter-spacing: -1px;
+    color: var(--text-primary);
+}
+
+.cta-text {
+    color: var(--text-secondary);
+    font-size: 17px;
+    margin-bottom: 32px;
+    max-width: 480px;
+    margin-right: auto;
+    margin-left: auto;
+    line-height: 1.7;
+}
+
+.cta-note {
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-top: 18px;
+}
+
+/* ============================
+   Footer
+   ============================ */
+.footer {
+    padding: 72px 0 32px;
+    border-top: 1px solid var(--border);
+    background: var(--bg-elevated);
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 56px;
+}
+
+.footer-brand p {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin: 18px 0;
+    max-width: 300px;
+    line-height: 1.7;
+}
+
+.social-links {
+    display: flex;
+    gap: 8px;
+}
+
+.social-links a {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.social-links a:hover {
+    color: var(--text-primary);
+    border-color: var(--border-strong);
+    background: var(--surface-hover);
+}
+
+.footer-col h4 {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 18px;
+    color: var(--text-primary);
+    letter-spacing: 0.3px;
+}
+
+.footer-col ul li {
+    margin-bottom: 10px;
+}
+
+.footer-col ul a {
+    color: var(--text-muted);
+    font-size: 14px;
+    transition: color 0.15s ease;
+}
+
+.footer-col ul a:hover { color: var(--text-primary); }
+
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 28px;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 13px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+/* ============================
+   Reveal animations
+   ============================ */
+.reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ============================
+   Responsive
+   ============================ */
+@media (max-width: 1024px) {
+    .features-grid,
+    .pricing-grid,
+    .testimonials-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+    .footer-brand { grid-column: 1 / -1; }
+}
+
+@media (max-width: 768px) {
+    .nav-links,
+    .nav-actions { display: none; }
+
+    .nav-links.active {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 16px;
+        left: 16px;
+        background: var(--bg-elevated);
+        backdrop-filter: blur(20px);
+        padding: 8px;
+        border-radius: var(--radius-md);
+        border: 1px solid var(--border-strong);
+        gap: 2px;
+    }
+
+    .nav-links.active a {
+        width: 100%;
+        padding: 12px 14px;
+    }
+
+    .menu-toggle { display: flex; }
+
+    .hero {
+        padding: 130px 0 80px;
+    }
+
+    .hero-stats {
+        flex-direction: column;
+        gap: 20px;
+        padding: 24px;
+    }
+
+    .stat-divider {
+        width: 60px;
+        height: 1px;
+    }
+
+    .section { padding: 80px 0; }
+    .section-header { margin-bottom: 48px; }
+
+    .features-grid,
+    .pricing-grid,
+    .testimonials-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .steps {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    .footer-brand { grid-column: 1 / -1; }
+
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .cta-box { padding: 48px 24px; }
+}
+
+@media (max-width: 480px) {
+    .container { padding: 0 16px; }
+
+    .hero-actions { flex-direction: column; width: 100%; }
+    .hero-actions .btn-primary,
+    .hero-actions .btn-secondary { width: 100%; }
+
+    .footer-grid { grid-template-columns: 1fr; }
+}
+    </style>
+</head>
+<body>
+    <!-- ============ Navbar ============ -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <span class="logo-mark">N</span>
+                <span class="logo-text">نووا<span class="logo-accent"> AI</span></span>
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#features">امکانات</a></li>
+                <li><a href="#how">نحوه کار</a></li>
+                <li><a href="#pricing">قیمت‌گذاری</a></li>
+                <li><a href="#testimonials">نظرات</a></li>
+                <li><a href="#faq">سوالات</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="#" class="btn-ghost">ورود</a>
+                <a href="#pricing" class="btn-primary">شروع رایگان</a>
+            </div>
+            <button class="menu-toggle" id="menuToggle" aria-label="منو">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ============ Hero ============ -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="container hero-content">
+            <a href="#" class="hero-badge">
+                <span class="badge-tag">جدید</span>
+                <span>نسخه ۲.۰ منتشر شد — قابلیت تولید تصویر اضافه شد</span>
+                <span style="color: var(--text-muted); margin-right: 4px;">←</span>
+            </a>
+            <h1 class="hero-title">
+                محتوای هوشمند را<br>
+                با <span class="gradient-text">هوش مصنوعی</span> بسازید
+            </h1>
+            <p class="hero-subtitle">
+                نووا AI به شما کمک می‌کند مقاله، تصویر و کمپین‌های بازاریابی فارسی را
+                در چند ثانیه و با کیفیتی حرفه‌ای تولید کنید.
+            </p>
+            <div class="hero-actions">
+                <a href="#pricing" class="btn-primary btn-large">
+                    شروع رایگان
+                    <span class="btn-arrow">←</span>
+                </a>
+                <a href="#" class="btn-secondary btn-large">مشاهده دمو</a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <div class="stat-num" data-target="50000">۰</div>
+                    <div class="stat-label">کاربر فعال</div>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <div class="stat-num" data-target="2000000">۰</div>
+                    <div class="stat-label">محتوای تولیدشده</div>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <div class="stat-num" data-target="99">۰</div>
+                    <div class="stat-label">درصد رضایت</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ Trust Bar ============ -->
+    <section class="trust-bar">
+        <div class="container">
+            <p class="trust-title">مورد اعتماد بیش از ۵۰٬۰۰۰ تیم و برند ایرانی</p>
+            <div class="trust-logos">
+                <div class="trust-logo">دیجی‌کالا</div>
+                <div class="trust-logo">اسنپ</div>
+                <div class="trust-logo">تپسی</div>
+                <div class="trust-logo">فیلیمت</div>
+                <div class="trust-logo">بامیک</div>
+                <div class="trust-logo">تورینو</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ Features ============ -->
+    <section class="features section" id="features">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">امکانات</span>
+                <h2 class="section-title">همه چیزی که برای <span class="gradient-text">تولید محتوا</span> نیاز دارید</h2>
+                <p class="section-desc">ابزارهای هوشمند نووا AI، فرایند تولید محتوا را به ساده‌ترین شکل ممکن تبدیل می‌کنند.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon icon-indigo">✦</div>
+                    <h3>تولید متن فارسی</h3>
+                    <p>مقاله‌ها، پست‌های شبکه اجتماعی و توضیحات محصول را با کیفیت طبیعی فارسی تولید کنید.</p>
+                </div>
+                <div class="feature-card feature-card-center">
+                    <div class="feature-icon icon-violet">◉</div>
+                    <h3>تولید تصویر</h3>
+                    <p>تصاویر حرفه‌ای و منحصر به فرد را از روی توضیحات متنی بسازید و در پروژه‌ها استفاده کنید.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon icon-rose">◈</div>
+                    <h3>ویرایش هوشمند</h3>
+                    <p>متن‌های خود را با کمک AI بازنویسی، خلاصه یا به زبان دیگری ترجمه کنید.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon icon-emerald">▲</div>
+                    <h3>دسته‌بندی خودکار</h3>
+                    <p>محتواهای خود را به‌صورت خودکار برچسب‌گذاری و دسته‌بندی کنید تا سریع‌تر پیدا شوند.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon icon-amber">❖</div>
+                    <h3>تحلیل و گزارش</h3>
+                    <p>عملکرد محتوای خود را با داشبورد پیشرفته مانیتور و بهینه‌سازی کنید.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon icon-sky">✧</div>
+                    <h3>همکاری تیمی</h3>
+                    <p>با اعضای تیم خود در زمان واقعی روی محتوا کار کنید و بازخورد بگیرید.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ How It Works ============ -->
+    <section class="how section" id="how">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">نحوه کار</span>
+                <h2 class="section-title">در <span class="gradient-text">سه قدم</span> شروع کنید</h2>
+                <p class="section-desc">بدون نیاز به دانش فنی، در کمتر از یک دقیقه اولین محتوای خود را بسازید.</p>
+            </div>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">۱</div>
+                    <h3>ثبت‌نام کنید</h3>
+                    <p>ایمیل خود را وارد کنید و در کمتر از ۳۰ ثانیه یک حساب کاربری رایگان بسازید.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">۲</div>
+                    <h3>درخواست بدهید</h3>
+                    <p>توضیح بدید چه محتوایی می‌خواید: مقاله، تصویر، کمپین یا هر چیز دیگه.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">۳</div>
+                    <h3>نتیجه بگیرید</h3>
+                    <p>در چند ثانیه محتوای آماده را ببینید، ویرایش کنید و دانلود یا منتشر کنید.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ Pricing ============ -->
+    <section class="pricing section" id="pricing">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">قیمت‌گذاری</span>
+                <h2 class="section-title">پلن مناسب <span class="gradient-text">خودت</span> رو انتخاب کن</h2>
+                <p class="section-desc">همه پلن‌ها با ۷ روز تست رایگان شروع می‌شوند. بدون نیاز به کارت اعتباری.</p>
+            </div>
+            <div class="pricing-grid">
+                <div class="price-card">
+                    <div class="price-header">
+                        <h3>رایگان</h3>
+                        <p>برای امتحان کردن</p>
+                    </div>
+                    <div class="price-amount">
+                        <span class="price-currency">تومان</span>
+                        <span class="price-value">۰</span>
+                        <span class="price-period">/ماه</span>
+                    </div>
+                    <ul class="price-features">
+                        <li>۱۰ محتوای متنی در ماه</li>
+                        <li>۵ تصویر در ماه</li>
+                        <li>پشتیبانی ایمیلی</li>
+                        <li>دسترسی به قالب‌های پایه</li>
+                    </ul>
+                    <a href="#" class="btn-secondary btn-full">شروع کنید</a>
+                </div>
+                <div class="price-card price-card-featured">
+                    <div class="price-badge">محبوب‌ترین</div>
+                    <div class="price-header">
+                        <h3>حرفه‌ای</h3>
+                        <p>برای تولیدکنندگان محتوا</p>
+                    </div>
+                    <div class="price-amount">
+                        <span class="price-currency">تومان</span>
+                        <span class="price-value">۱۴۹٬۰۰۰</span>
+                        <span class="price-period">/ماه</span>
+                    </div>
+                    <ul class="price-features">
+                        <li>متن نامحدود</li>
+                        <li>۱۰۰ تصویر در ماه</li>
+                        <li>پشتیبانی اولویت‌دار</li>
+                        <li>تمام قالب‌های پیشرفته</li>
+                        <li>API دسترسی</li>
+                        <li>تیم تا ۵ نفر</li>
+                    </ul>
+                    <a href="#" class="btn-primary btn-full">شروع کنید</a>
+                </div>
+                <div class="price-card">
+                    <div class="price-header">
+                        <h3>سازمانی</h3>
+                        <p>برای تیم‌های بزرگ</p>
+                    </div>
+                    <div class="price-amount">
+                        <span class="price-currency">تومان</span>
+                        <span class="price-value">۴۹۹٬۰۰۰</span>
+                        <span class="price-period">/ماه</span>
+                    </div>
+                    <ul class="price-features">
+                        <li>همه امکانات حرفه‌ای</li>
+                        <li>تصویر نامحدود</li>
+                        <li>پشتیبانی اختصاصی ۲۴/۷</li>
+                        <li>تیم نامحدود</li>
+                        <li>آموزش اختصاصی</li>
+                        <li>قرارداد SLA</li>
+                    </ul>
+                    <a href="#" class="btn-secondary btn-full">تماس بگیرید</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ Testimonials ============ -->
+    <section class="testimonials section" id="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">نظرات</span>
+                <h2 class="section-title">کاربران ما <span class="gradient-text">چه می‌گویند</span></h2>
+                <p class="section-desc">بیش از ۵۰ هزار تولیدکننده محتوا از نووا AI استفاده می‌کنند.</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"از وقتی نووا رو شروع کردم، سرعت تولید مقالاتم ۵ برابر شده. کیفیت فارسی‌اش واقعاً عالیه."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar avatar-1">س</div>
+                        <div>
+                            <div class="author-name">سارا محمدی</div>
+                            <div class="author-role">مدیر محتوای دیجی‌کالا</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"قابلیت تولید تصویر فوق‌العاده‌ست. دیگه نیازی به طراح گرافیک برای پست‌های اینستاگرام ندارم."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar avatar-2">ر</div>
+                        <div>
+                            <div class="author-name">رضا کریمی</div>
+                            <div class="author-role">بنیان‌گذار استارتاپ تورینو</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"پشتیبانی تیم نووا فوق‌العاده‌ست. هر سوالی داشتم سریع جواب دادن و راهنمایی کردن."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar avatar-3">م</div>
+                        <div>
+                            <div class="author-name">مریم احمدی</div>
+                            <div class="author-role">فریلنسر تولید محتوا</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ FAQ ============ -->
+    <section class="faq section" id="faq">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">سوالات</span>
+                <h2 class="section-title">سوالات <span class="gradient-text">متداول</span></h2>
+                <p class="section-desc">اگر سوال شما اینجا نیست، با پشتیبانی ما در تماس باشید.</p>
+            </div>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>آیا نووا AI واقعاً رایگان است؟</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>بله، پلن رایگان ما به شما اجازه می‌دهد ماهانه ۱۰ محتوای متنی و ۵ تصویر به‌صورت کاملاً رایگان تولید کنید. بدون نیاز به کارت اعتباری.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>کیفیت فارسی نووا چطور است؟</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>مدل زبانی ما به‌طور اختصاصی روی میلیون‌ها متن فارسی آموزش دیده است و قادر است محتوایی با لحن طبیعی و روان تولید کند.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>آیا می‌توانم هر لحظه اشتراکم را لغو کنم؟</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>بله، بدون هیچ تعهدی می‌توانید اشتراک خود را هر زمان که خواستید لغو کنید. فقط کافی است از پنل کاربری خود اقدام کنید.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>آیا داده‌های من امن هستند؟</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>بله، تمام داده‌ها با رمزنگاری SSL ذخیره می‌شوند و ما هرگز محتوای شما را با شخص ثالثی به اشتراک نمی‌گذاریم.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>آیا API دارید؟</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>بله، در پلن حرفه‌ای و سازمانی به API دسترسی دارید و می‌توانید قابلیت‌های نووا را در محصولات خود ادغام کنید.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ CTA ============ -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-box">
+                <h2 class="cta-title">آماده‌اید شروع کنید؟</h2>
+                <p class="cta-text">به جمع ۵۰٬۰۰۰ کاربر نووا AI بپیوندید و امروز اولین محتوای هوشمند خود را بسازید.</p>
+                <a href="#" class="btn-primary btn-large">شروع رایگان ←</a>
+                <p class="cta-note">بدون نیاز به کارت اعتباری • ۷ روز تست رایگان</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ Footer ============ -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#" class="logo">
+                        <span class="logo-mark">N</span>
+                        <span class="logo-text">نووا<span class="logo-accent"> AI</span></span>
+                    </a>
+                    <p>پلتفرم هوش مصنوعی نسل جدید برای تولید محتوای فارسی باکیفیت.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="توییتر">𝕏</a>
+                        <a href="#" aria-label="اینستاگرام">◉</a>
+                        <a href="#" aria-label="لینکدین">in</a>
+                        <a href="#" aria-label="تلگرام">✈</a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>محصول</h4>
+                    <ul>
+                        <li><a href="#features">امکانات</a></li>
+                        <li><a href="#pricing">قیمت‌گذاری</a></li>
+                        <li><a href="#">API</a></li>
+                        <li><a href="#">تغییرات</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>شرکت</h4>
+                    <ul>
+                        <li><a href="#">درباره ما</a></li>
+                        <li><a href="#">وبلاگ</a></li>
+                        <li><a href="#">فرصت شغلی</a></li>
+                        <li><a href="#">تماس</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>پشتیبانی</h4>
+                    <ul>
+                        <li><a href="#faq">سوالات</a></li>
+                        <li><a href="#">مستندات</a></li>
+                        <li><a href="#">راهنما</a></li>
+                        <li><a href="#">وضعیت سرویس</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>قانونی</h4>
+                    <ul>
+                        <li><a href="#">حریم خصوصی</a></li>
+                        <li><a href="#">شرایط استفاده</a></li>
+                        <li><a href="#">کوکی‌ها</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© ۱۴۰۴ نووا AI. تمام حقوق محفوظ است.</p>
+                <p>ساخته‌شده با عشق در تهران</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+    /* ----- Navbar Scroll Effect ----- */
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', function () {
+        if (window.pageYOffset > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    });
+
+    /* ----- Mobile Menu Toggle ----- */
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    if (menuToggle) {
+        menuToggle.addEventListener('click', function () {
+            menuToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+    }
+
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+            menuToggle.classList.remove('active');
+            navLinks.classList.remove('active');
+        });
+    });
+
+    /* ----- FAQ Accordion ----- */
+    const faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        question.addEventListener('click', () => {
+            const isActive = item.classList.contains('active');
+            faqItems.forEach(i => i.classList.remove('active'));
+            if (!isActive) item.classList.add('active');
+        });
+    });
+
+    /* ----- Animated Counter ----- */
+    function animateCounter(element, target) {
+        const duration = 1800;
+        const startTime = performance.now();
+        function update(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const value = Math.floor(target * eased);
+            element.textContent = value.toLocaleString('fa-IR');
+            if (progress < 1) requestAnimationFrame(update);
+            else element.textContent = target.toLocaleString('fa-IR');
+        }
+        requestAnimationFrame(update);
+    }
+
+    /* ----- Intersection Observer ----- */
+    const observer = new IntersectionObserver(function (entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                if (entry.target.hasAttribute('data-target')) {
+                    const target = parseInt(entry.target.getAttribute('data-target'));
+                    animateCounter(entry.target, target);
+                }
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+
+    document.querySelectorAll(
+        '.feature-card, .step, .price-card, .testimonial-card, .faq-item, .section-header, .trust-logo, .hero-badge, .hero-stats'
+    ).forEach((el, i) => {
+        el.classList.add('reveal');
+        el.style.transitionDelay = `${(i % 3) * 0.08}s`;
+        observer.observe(el);
+    });
+
+    document.querySelectorAll('.stat-num').forEach(stat => observer.observe(stat));
+
+    /* ----- Smooth Scroll ----- */
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            const targetId = this.getAttribute('href');
+            if (targetId === '#' || targetId.length < 2) return;
+            const target = document.querySelector(targetId);
+            if (target) {
+                e.preventDefault();
+                const offset = 80;
+                const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - offset;
+                window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+            }
+        });
+    });
+});
+    </script>
+</body>
+</html>
