@@ -3,6 +3,10 @@
    تعاملات و انیمیشن‌ها
    ============================ */
 
+
+
+//    جلسه بعد اسکریپت ها توضیح داده بشه
+
 document.addEventListener('DOMContentLoaded', function () {
 
     /* ----- Navbar Scroll Effect ----- */
